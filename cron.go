@@ -82,6 +82,7 @@ func NewWithLocation(location *time.Location) *Cron {
 	return &Cron{
 		entries:       make(map[string]*Entry),
 		add:           make(chan *Entry),
+		remove:        make(chan string),
 		stop:          make(chan struct{}),
 		sortedEntries: make([]*Entry, 0),
 		snapshot:      make(chan []*Entry),
@@ -111,6 +112,10 @@ func (c *Cron) AddJob(spec string, cmd Job) error {
 	}
 	c.Schedule(schedule, cmd)
 	return nil
+}
+
+func (c *Cron) RemoveJob(jobId string) {
+	c.remove <- jobId
 }
 
 // Schedule adds a Job to the Cron to be run on the given schedule.
