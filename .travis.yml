@@ -7,6 +7,6 @@ go:
   - "1.10.x"
   - master
 script:
-  - go test -v ./...
+  - ./go.test.sh
 after_success:
   - bash <(curl -s https://codecov.io/bash)

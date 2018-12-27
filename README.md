@@ -1,6 +1,7 @@
 # go-cron
 [![Build Status](https://travis-ci.org/ringtail/go-cron.svg?branch=master)](https://travis-ci.org/ringtail/go-cron)
-[![Codecov](https://codecov.io/gh/ringtail/go-cron/branch/master/graph/badge.svg)](https://codecov.io/gh/ringtail/go-cron)
+[![Codecov](https://codecov.io/gh/ringtail/go-cron/branch/master/graph/badge.svg)](https://codecov.io/gh/ringtail/go-cron)    
+
 a cron library for go.
 
 ## Why create another cron lib 
