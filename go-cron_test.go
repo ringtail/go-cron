@@ -26,7 +26,6 @@ func NewTestRemoveJob(id string) Job {
 }
 
 func TestRemoveJob(t *testing.T) {
-	var stopChan chan struct{}
 	c := New()
 	c.AddJob(" */10 * * * *", NewTestRemoveJob("1"))
 	c.Start()
@@ -37,5 +36,4 @@ func TestRemoveJob(t *testing.T) {
 	c.RemoveJob("1")
 	<-time.After(time.Second * 10)
 	c.AddJob(" */5 * * * *", NewTestRemoveJob("1"))
-	<-stopChan
 }
