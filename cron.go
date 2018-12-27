@@ -15,12 +15,19 @@ type Cron struct {
 	entries       map[string]*Entry
 	stop          chan struct{}
 	add           chan *Entry
+	result        chan *JobResult
 	remove        chan string
 	sortedEntries []*Entry
 	snapshot      chan []*Entry
 	running       bool
 	ErrorLog      *log.Logger
 	location      *time.Location
+}
+
+type JobResult struct {
+	JobId string
+	Ref   Job
+	Error error
 }
 
 // Job is an interface for submitted cron jobs.
@@ -132,6 +139,13 @@ func (c *Cron) Schedule(schedule Schedule, cmd Job) {
 	c.add <- entry
 }
 
+func (c *Cron) HandleResult(Handler func(j *JobResult)) {
+	for {
+		js := <-c.result
+		Handler(js)
+	}
+}
+
 // Entries returns a snapshot of the cron entries.
 func (c *Cron) Entries() []*Entry {
 	if c.running {
@@ -174,7 +188,16 @@ func (c *Cron) runWithRecovery(j Job) {
 			c.logf("cron: panic running job: %v\n%s", r, buf)
 		}
 	}()
-	j.Run()
+
+	err := j.Run()
+
+	js := &JobResult{
+		JobId: j.ID(),
+		Ref:   j,
+		Error: err,
+	}
+	c.result <- js
+
 }
 
 // Run the scheduler. this is private just due to the need to synchronize
