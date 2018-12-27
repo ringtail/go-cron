@@ -26,7 +26,7 @@ type Cron struct {
 // Job is an interface for submitted cron jobs.
 type Job interface {
 	ID() string
-	Run()
+	Run() error
 }
 
 // The Schedule describes a job's duty cycle.
@@ -93,14 +93,14 @@ func NewWithLocation(location *time.Location) *Cron {
 }
 
 // A wrapper that turns a func() into a cron.Job
-type FuncJob func()
+type FuncJob func() error
 
-func (f FuncJob) Run() { f() }
+func (f FuncJob) Run() error { return f() }
 
 func (f FuncJob) ID() string { return uuid.Must(uuid.NewV4()).String() }
 
 // AddFunc adds a func to the Cron to be run on the given schedule.
-func (c *Cron) AddFunc(spec string, cmd func()) error {
+func (c *Cron) AddFunc(spec string, cmd func() error) error {
 	return c.AddJob(spec, FuncJob(cmd))
 }
 

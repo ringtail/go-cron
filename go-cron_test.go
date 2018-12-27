@@ -14,8 +14,9 @@ func (tj *testRemoveJob) ID() string {
 	return tj.id
 }
 
-func (tj *testRemoveJob) Run() {
+func (tj *testRemoveJob) Run() error {
 	fmt.Printf("demo: %s\n", tj.id)
+	return nil
 }
 
 func NewTestRemoveJob(id string) Job {

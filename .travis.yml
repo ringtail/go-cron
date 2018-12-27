@@ -1,1 +1,12 @@
 language: go
+install: true
+sudo: required
+go:
+  - 1.8
+  - 1.9
+  - 1.10
+  - master
+script:
+  - go test -v ./...
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
