@@ -15,7 +15,6 @@ type Cron struct {
 	entries       map[string]*Entry
 	stop          chan struct{}
 	add           chan *Entry
-	result        chan *JobResult
 	resultHandler func(r *JobResult)
 	remove        chan string
 	sortedEntries []*Entry
@@ -194,7 +193,7 @@ func (c *Cron) runWithRecovery(j Job) {
 		Ref:   j,
 		Error: err,
 	}
-	c.result <- js
+	go c.resultHandler(js)
 }
 
 // Run the scheduler. this is private just due to the need to synchronize
@@ -249,9 +248,6 @@ func (c *Cron) run() {
 				c.snapshot <- c.entrySnapshot()
 				continue
 
-			case r := <-c.result:
-				go c.resultHandler(r)
-				continue
 
 			case <-c.stop:
 				timer.Stop()
