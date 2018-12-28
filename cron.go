@@ -16,6 +16,7 @@ type Cron struct {
 	stop          chan struct{}
 	add           chan *Entry
 	result        chan *JobResult
+	resultHandler func(r *JobResult)
 	remove        chan string
 	sortedEntries []*Entry
 	snapshot      chan []*Entry
@@ -139,11 +140,8 @@ func (c *Cron) Schedule(schedule Schedule, cmd Job) {
 	c.add <- entry
 }
 
-func (c *Cron) HandleResult(Handler func(j *JobResult)) {
-	for {
-		js := <-c.result
-		Handler(js)
-	}
+func (c *Cron) AddResultHandler(Handler func(j *JobResult)) {
+	c.resultHandler = Handler
 }
 
 // Entries returns a snapshot of the cron entries.
@@ -197,7 +195,6 @@ func (c *Cron) runWithRecovery(j Job) {
 		Error: err,
 	}
 	c.result <- js
-
 }
 
 // Run the scheduler. this is private just due to the need to synchronize
@@ -250,6 +247,10 @@ func (c *Cron) run() {
 
 			case <-c.snapshot:
 				c.snapshot <- c.entrySnapshot()
+				continue
+
+			case r := <-c.result:
+				go c.resultHandler(r)
 				continue
 
 			case <-c.stop:
