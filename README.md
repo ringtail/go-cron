@@ -25,8 +25,5 @@ c.Stop()  // Stop the scheduler (does not stop any jobs already running).
 ```
 The code above is how `robfig/cron` works. But it's impossible if you want to update a spec of job or remove a specific job. So for these reasons, I decided to create another cron lib based on <a href="github.com/robfig/cron">robfig/cron</a>. 
 
-## Usage 
-// TODO 
-
 ## *License*
 This software is released under the Apache 2.0 license.
