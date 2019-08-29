@@ -282,7 +282,7 @@ type testJob struct {
 }
 
 func (t testJob) ID() string {
-	return uuid.Must(uuid.NewV4()).String()
+	return uuid.Must(uuid.NewV4(), nil).String()
 }
 
 func (t testJob) Run() error {

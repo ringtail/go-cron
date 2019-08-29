@@ -106,7 +106,7 @@ type FuncJob func() (msg string, err error)
 
 func (f FuncJob) Run() (msg string, err error) { return f() }
 
-func (f FuncJob) ID() string { return uuid.Must(uuid.NewV4()).String() }
+func (f FuncJob) ID() string { return uuid.Must(uuid.NewV4(), nil).String() }
 
 // AddFunc adds a func to the Cron to be run on the given schedule.
 func (c *Cron) AddFunc(spec string, cmd func() (msg string, err error)) error {
