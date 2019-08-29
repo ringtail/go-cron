@@ -70,7 +70,7 @@ func TestStopCausesJobsToNotRun(t *testing.T) {
 	cron := New()
 	cron.Start()
 	cron.Stop()
-	cron.AddFunc("* * * * * ?", func() error { wg.Done(); return nil })
+	cron.AddFunc("* * * * * ?", func() (msg string, err error) { wg.Done(); return "", nil })
 
 	select {
 	case <-time.After(OneSecond):
