@@ -394,12 +394,22 @@ func parseDateSchedule(schedule string) (*SpecSchedule, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	field := func(field string, r bounds) uint64 {
+		if err != nil {
+			return 0
+		}
+		var bits uint64
+		bits, err = getField(field, r)
+		return bits
+	}
+
 	return &SpecSchedule{
-		Second: uint64(date.Second()),
-		Minute: uint64(date.Minute()),
-		Hour:   uint64(date.Hour()),
-		Dom:    uint64(date.Day()),
-		Month:  uint64(date.Month()),
-		Dow:    all(dow),
+		Second: field(string(date.Second()), seconds),
+		Minute: field(string(date.Minute()), minutes),
+		Hour:   field(string(date.Hour()), hours),
+		Dom:    field(string(date.Day()), dom),
+		Month:  field(string(date.Month()), months),
+		Dow:    field(string(date.Weekday()), dow),
 	}, nil
 }

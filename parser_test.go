@@ -234,7 +234,7 @@ func TestStandardSpecSchedule(t *testing.T) {
 }
 
 func TestParseDateSchedule(t *testing.T) {
-	date1 := "2020-11-02 15:04:05"
+	date1 := "2020-10-27 19:05:00"
 	s, err := parseDateSchedule(date1)
 	if err != nil {
 		t.Errorf("Failed to parse date schedule: %v", err)
