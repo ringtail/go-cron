@@ -378,7 +378,7 @@ func parseDescriptor(descriptor string) (Schedule, error) {
 
 	const date = "@date "
 	if strings.HasPrefix(descriptor, date) {
-		ss, err := parseDateSchedule(descriptor)
+		ss, err := parseDateSchedule(descriptor[len(date):])
 		if err != nil {
 			return nil, fmt.Errorf("Failed to parse date %s: %s", descriptor, err)
 		}
