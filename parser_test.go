@@ -232,3 +232,28 @@ func TestStandardSpecSchedule(t *testing.T) {
 		}
 	}
 }
+
+func TestParseDateSchedule(t *testing.T) {
+	date1 := "2020-11-02 15:04:05"
+	s, err := parseDateSchedule(date1)
+	if err != nil {
+		t.Errorf("Failed to parse date schedule: %v", err)
+	}
+	t.Logf("passed: %v", s)
+
+	date2 := "2020-11-02 15:04:05Z"
+	s, err = parseDateSchedule(date2)
+	if err != nil {
+		t.Logf("Failed to parse date schedule %s: %v", date2, err)
+	} else {
+		t.Errorf("Should not pass the schedule pass %v: %v", s, err)
+	}
+
+	date3 := "2020-11-02 15:04"
+	s, err = parseDateSchedule(date3)
+	if err != nil {
+		t.Logf("Failed to parse date schedule %s: %v", date3, err)
+	} else {
+		t.Errorf("Should not pass the schedule pass %v: %v", s, err)
+	}
+}
