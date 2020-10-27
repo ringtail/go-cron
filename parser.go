@@ -405,11 +405,11 @@ func parseDateSchedule(schedule string) (*SpecSchedule, error) {
 	}
 
 	return &SpecSchedule{
-		Second: field(string(date.Second()), seconds),
-		Minute: field(string(date.Minute()), minutes),
-		Hour:   field(string(date.Hour()), hours),
-		Dom:    field(string(date.Day()), dom),
-		Month:  field(string(date.Month()), months),
-		Dow:    field(string(date.Weekday()), dow),
+		Second: field(strconv.Itoa(date.Second()), seconds),
+		Minute: field(strconv.Itoa(date.Minute()), minutes),
+		Hour:   field(strconv.Itoa(date.Hour()), hours),
+		Dom:    field(strconv.Itoa(date.Day()), dom),
+		Month:  field(strconv.Itoa(int(date.Month())), months),
+		Dow:    all(dow),
 	}, nil
 }

@@ -249,11 +249,13 @@ func TestParseDateSchedule(t *testing.T) {
 		t.Errorf("Should not pass the schedule pass %v: %v", s, err)
 	}
 
-	date3 := "2020-11-02 15:04"
+	date3 := "2020-10-27 19:50:00"
 	s, err = parseDateSchedule(date3)
-	if err != nil {
+	if err == nil {
 		t.Logf("Failed to parse date schedule %s: %v", date3, err)
 	} else {
 		t.Errorf("Should not pass the schedule pass %v: %v", s, err)
 	}
+
+	t.Log(s, s.Next(time.Now()))
 }
