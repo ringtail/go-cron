@@ -245,6 +245,7 @@ func (c *Cron) run() {
 
 			case id := <-c.remove:
 				timer.Stop()
+                                now = c.now()
 				delete(c.entries, id)
 
 			case <-c.snapshot:
